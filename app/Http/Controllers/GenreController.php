@@ -11,6 +11,6 @@ class GenreController extends Controller
         $model = new Genre();
         $genres = $model->getGenres();
 
-        return view('genres', compact('genres'));
+        return response()->json($genres);
     }
 }

@@ -11,6 +11,6 @@ class AuthorController extends Controller
         $model = new Author();
         $authors = $model->getAuthors();
 
-        return view('authors', compact('authors'));
+        return response()->json($authors);
     }
 }
