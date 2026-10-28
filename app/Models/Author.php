@@ -2,16 +2,14 @@
 
 namespace App\Models;
 
-class Author
+use Illuminate\Database\Eloquent\Model;
+
+class Author extends Model
 {
-    public function getAuthors()
-    {
-        return [
-            ['id' => 1, 'name' => 'Andrea Hirata', 'country' => 'Indonesia'],
-            ['id' => 2, 'name' => 'Tere Liye', 'country' => 'Indonesia'],
-            ['id' => 3, 'name' => 'Dee Lestari', 'country' => 'Indonesia'],
-            ['id' => 4, 'name' => 'J.K. Rowling', 'country' => 'Inggris'],
-            ['id' => 5, 'name' => 'George Orwell', 'country' => 'Inggris'],
-        ];
-    }
+    protected $table = 'authors';
+
+    protected $fillable = [
+        'name',
+        'country',
+    ];
 }
