@@ -46,4 +46,79 @@ class AuthorController extends Controller
             'data' => $author
         ], 201);
     }
+
+    // GET: Menampilkan detail author
+    public function show(string $id)
+    {
+        $author = Author::find($id);
+
+        if (!$author) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Author not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Get detail author',
+            'data' => $author
+        ], 200);
+    }
+
+    // PUT/PATCH: Memperbarui author
+    public function update(Request $request, string $id)
+    {
+        $author = Author::find($id);
+
+        if (!$author) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Author not found'
+            ], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'country' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()
+            ], 422);
+        }
+
+        $author->update([
+            'name' => $request->name,
+            'country' => $request->country,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Author updated successfully!',
+            'data' => $author
+        ], 200);
+    }
+
+    // DELETE: Menghapus author
+    public function destroy(string $id)
+    {
+        $author = Author::find($id);
+
+        if (!$author) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Author not found'
+            ], 404);
+        }
+
+        $author->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Author deleted successfully!'
+        ], 200);
+    }
 }
