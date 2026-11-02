@@ -6,6 +6,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TransactionController;
 
 // Authentication
 Route::post('/register', [AuthController::class, 'register']);
@@ -26,6 +27,13 @@ Route::apiResource('/genres', GenreController::class)
 // Harus login
 Route::middleware(['auth:api'])->group(function () {
 
+    // Khusus Customer
+    Route::middleware(['role:customer'])->group(function () {
+        Route::post('/transactions', [TransactionController::class, 'store']);
+        Route::get('/transactions/{transaction}', [TransactionController::class, 'show']);
+        Route::put('/transactions/{transaction}', [TransactionController::class, 'update']);
+    });
+
     // Khusus Admin
     Route::middleware(['role:admin'])->group(function () {
 
@@ -40,5 +48,9 @@ Route::middleware(['auth:api'])->group(function () {
         // Genre khusus Admin
         Route::apiResource('/genres', GenreController::class)
             ->except(['index', 'show']);
+
+        // Transaction khusus Admin
+        Route::get('/transactions', [TransactionController::class, 'index']);
+        Route::delete('/transactions/{transaction}', [TransactionController::class, 'destroy']);
     });
 });
